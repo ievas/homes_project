@@ -1,0 +1,66 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+} */
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+a {
+  text-decoration: none;
+  padding: 2rem;
+  margin: 2rem;
+  color: rgba(101, 185, 233, 0.5);
+  font-weight: bolder;
+  font-size: larger;
+}
+
+button {
+  background: #333131;
+  color: inherit;
+  border: none;
+  padding: 0.75rem;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  font-size: 1rem;
+  margin-left: 50px;
+  font-size: 1.5em;
+}
+form {
+  margin-top: 70px;
+  margin-left: 50px;
+  text-align: left;
+}
+form label {
+  display: block;
+  margin-bottom: 10px;
+  margin-left: 35px;
+}
+
+form input {
+  display: block;
+  padding: 5px;
+
+  margin-top: 20px;
+  width: 25%;
+  height: 50px;
+  box-sizing: border-box;
+}
+
+input {
+  margin: 10px;
+  border: 1px solid rgba(132, 222, 134, 0.5);
+  box-shadow: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border: rgba(132, 222, 134, 0.5);
+}
