@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function SignUp({ setToken }) {
+function SignUp() {
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   //   let [success, setSuccess] = useState("");
   let navigate = useNavigate();
+  let person = "g";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -22,12 +23,11 @@ function SignUp({ setToken }) {
         }),
       });
       let result = await response.json();
-      setToken(result.token);
 
       setUsername("");
       setPassword("");
       //   setSuccess(true);
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       console.error(error);
     }

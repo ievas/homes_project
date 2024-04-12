@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 
-function Navbar({ token, setToken }) {
+function Navbar({ isLoggedIn }) {
   function handleLogout() {
-    setToken(null);
+    localStorage.setItem("token", null);
   }
 
   return (
     <>
-      {token ? (
+      {isLoggedIn ? (
         <>
           <Link to="/">Homes</Link>
           <Link to="/create">Create</Link>
           <Link to="/account">Inventory</Link>
           <button id="logout" onClick={handleLogout}>
-            logout
+            Logout
           </button>
         </>
       ) : (

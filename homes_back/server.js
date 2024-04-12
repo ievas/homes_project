@@ -1,10 +1,16 @@
 let pg = require("pg");
 const cors = require("cors");
 let express = require("express");
+let jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 let client = new pg.Client(
   process.env.DATABASE_URL || "postgres://localhost/homes"
 );
 let app = express();
+app.use(express.json());
+app.use(cors());
 
 let init = async () => {
   await client.connect();
@@ -33,11 +39,6 @@ let init = async () => {
   await client.query(SQL);
 };
 
-app.use(express.json());
-app.use(cors());
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
 app.get("/properties", async (req, res, next) => {
   try {
     let SQL = `SELECT * FROM properties;`;
@@ -64,12 +65,19 @@ app.post("/signin", async (req, res, next) => {
   try {
     let SQL = `SELECT * FROM users WHERE username = $1`;
     let response = await client.query(SQL, [username]);
-    //if succesful
+    if (response.rows.length === 0) {
+      return res.status(401).send({ message: "Invalid username or password" });
+    }
     let user = response.rows[0];
     let match = await bcrypt.compare(password, user.password);
     if (match) {
-      let { password, ...userData } = user;
-      res.send({ message: "Login successful", userData });
+      let token = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET || "skaidas",
+        { expiresIn: "24h" }
+      );
+      console.log(token);
+      res.json({ token });
     } else {
       res.status(401).send({ message: "Invalid username or password" });
     }
