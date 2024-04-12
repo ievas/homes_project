@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function SignIn() {
+function SignIn({ setIsLoggedIn }) {
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [error, setError] = useState("");
@@ -30,6 +30,7 @@ function SignIn() {
       console.log(result);
       if (result.token) {
         localStorage.setItem("token", result.token);
+        setIsLoggedIn(true);
         navigate("/");
       } else {
         setError("No token received");

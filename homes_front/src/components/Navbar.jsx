@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-function Navbar({ isLoggedIn }) {
+function Navbar({ isLoggedIn, setIsLoggedIn }) {
   function handleLogout() {
-    localStorage.setItem("token", null);
+    setIsLoggedIn(false);
   }
 
   return (
@@ -18,7 +18,7 @@ function Navbar({ isLoggedIn }) {
         </>
       ) : (
         <>
-          <Link to="/">Homes</Link>
+          <Link to="/">Homes For Sale</Link>
           <Link to="/signup">Sign Up</Link>
           <Link to="/signin">Sign In</Link>
         </>

@@ -8,7 +8,7 @@ body {
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #333131;
+  background-color: hwb(276 47% 49%);
 }
 
 /* a {
