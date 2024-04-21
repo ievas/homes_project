@@ -6,14 +6,13 @@ body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #d3e0e0;
+  background-color: white;
 }
 
 .card-image {
-  width: 100%;
+  width: 50%;
   height: auto;
   border-radius: 5px;
 }
@@ -22,15 +21,62 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  width: 70%;
+  margin: auto;
+  padding: 10px;
 }
 
 .card-style {
   flex: 1 1 300px;
   margin: 10px;
   border: 1px solid #ccc;
-  margin: 10px;
   padding: 15px;
   border-radius: 5px;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  background-image: url("./assets/carmel.jpg");
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+.search-bar {
+  position: relative;
+}
+.title,
+.search-bar {
+  max-width: 50%;
+}
+.search-bar input {
+  padding: 8px;
+  /* margin-right: 8px; */
+  border: 1px solid #a5dadb;
+  border-radius: 4px;
+}
+.search-bar button {
+  padding: 8px;
+  background-color: none;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  border: rgb(179, 216, 239);
+}
+/* .left-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+} */

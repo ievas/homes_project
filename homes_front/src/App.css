@@ -6,13 +6,13 @@ a {
   text-decoration: none;
   padding: 2rem;
   margin: 2rem;
-  color: rgba(101, 185, 233, 0.5);
+  color: black;
   font-weight: bolder;
   font-size: larger;
 }
 
 button {
-  background: #333131;
+  background: none;
   color: inherit;
   border: none;
   padding: 0.75rem;
@@ -37,22 +37,24 @@ form label {
 form input {
   display: block;
   padding: 5px;
-
   margin-top: 20px;
-  width: 25%;
+  width: 45%;
   height: 50px;
   box-sizing: border-box;
 }
 
 input {
   margin: 10px;
-  border: 1px solid rgba(132, 222, 134, 0.5);
+  padding: 15px;
+  border: rgb(197, 226, 235);
   box-shadow: none;
   transition: border-color 0.3s ease;
+  font-size: larger;
 }
 
 input:focus {
-  border: rgba(132, 222, 134, 0.5);
+  border: #a3e1ee;
+  outline: none;
 }
 
 img {

@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
 import CreateHouse from "./pages/CreateHouse";
 import HouseList from "./components/HouseList";
+import Header from "./components/Header";
 
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,8 +25,9 @@ function App() {
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <h1>
-        <div className="logo">".."</div>
+        <div className="logo">Homes</div>
       </h1>
+      <Header />
 
       <Routes>
         <Route path="/" element={<HouseList isLoggedIn={isLoggedIn} />} />
