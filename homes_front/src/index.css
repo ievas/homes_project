@@ -1,6 +1,7 @@
 body {
   text-align: center;
   color: black;
+  letter-spacing: 0.2rem;
 }
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -67,7 +68,7 @@ body {
   padding: 8px;
   background-color: none;
   color: black;
-  border: none;
+  border: rgb(120, 212, 245);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -80,3 +81,6 @@ body {
   align-items: center;
   justify-content: flex-start;
 } */
+.navbar {
+  text-align: right;
+}

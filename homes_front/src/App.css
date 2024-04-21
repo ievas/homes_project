@@ -7,20 +7,19 @@ a {
   padding: 2rem;
   margin: 2rem;
   color: black;
-  font-weight: bolder;
   font-size: larger;
 }
 
 button {
   background: none;
   color: inherit;
-  border: none;
+  border: rgb(120, 212, 245);
   padding: 0.75rem;
   font: inherit;
   cursor: pointer;
   outline: inherit;
   font-size: 1rem;
-  margin-left: 50px;
+  /* margin-left: 50px; */
   font-size: 1.5em;
 }
 form {
@@ -41,6 +40,7 @@ form input {
   width: 45%;
   height: 50px;
   box-sizing: border-box;
+  border: 1px solid rgb(120, 212, 245);
 }
 
 input {
@@ -53,7 +53,7 @@ input {
 }
 
 input:focus {
-  border: #a3e1ee;
+  border-color: #a3e1ee;
   outline: none;
 }
 
