@@ -20,8 +20,8 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
         ) : (
           <>
             <Link to="/">Homes For Sale</Link>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/signin">Sign In</Link>
+            <Link to="/signup">Sign Up or In</Link>
+            <Link to="/signin">Cart(0)</Link>
           </>
         )}
       </div>
