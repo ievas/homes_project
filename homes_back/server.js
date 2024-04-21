@@ -18,7 +18,7 @@ let init = async () => {
   DROP TABLE IF EXISTS properties;
   CREATE TABLE users(
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
@@ -26,16 +26,30 @@ let init = async () => {
 
   CREATE TABLE properties(
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    type TEXT NOT NULL,
-    price TEXT NOT NULL,
-    size TEXT NOT NULL,
-    imageUrl TEXT NOT NULL,
-    status TEXT NOT NULL,
+    price INTEGER DEFAULT 584900,
+    address VARCHAR(900) DEFAULT '1020 Maple Grove Drive
+    Fairview, Arcadia 55987',
+    bedrooms INTEGER DEFAULT 3,
+    bathrooms INTEGER DEFAULT 2,
+    sqft INTEGER DEFAULT 1785,
+    status VARCHAR(455) DEFAULT 'Active',
+    realtor VARCHAR(455) DEFAULT 'Homes ".."',
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
   );
   `;
+  await client.query(SQL);
+
+  SQL = `
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 2200, 'Sale Pending', 'Peak Realty');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(850000, '4747 Mountain Scape Trail, Reno, NV 89523', 4, 3, 4200, 'For Sale', 'Bluegrass Properties');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(530000, '611 Sunset Cliffs Blvd, San Diego, CA 92107', 2, 2, 2600, 'For Sale', 'Sierra Realty');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(590000, '3256 New Moon Drive, Charlotte, NC 28277', 3, 2, 2200, 'Sold', 'Peak Realty');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 1800, 'For Sale', 'Queen City Estate');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(3000000, '870 Twilight Peak Avenue, Carmel, CA 90230', 5, 3, 3500, 'Sale Pending', 'Homes Realty');
+  
+        
+        `;
   await client.query(SQL);
 };
 

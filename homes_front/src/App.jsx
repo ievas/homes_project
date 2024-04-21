@@ -9,6 +9,7 @@ import HouseList from "./components/HouseList";
 
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
+  let [properties, setProperties] = useState({});
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -27,7 +28,7 @@ function App() {
       </h1>
 
       <Routes>
-        <Route path="/" element={<HouseList />} />
+        <Route path="/" element={<HouseList isLoggedIn={isLoggedIn} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route
           path="/signin"
