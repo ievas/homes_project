@@ -101,15 +101,21 @@ app.post("/signin", async (req, res, next) => {
 });
 // app.get("/users/:id", async (req, res, next) => {
 //   try {
-//     let hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-//     let SQL = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`;
+//     let SQL = `SELECT * FROM users WHERE id=$1`;
 //     let response = await client.query(SQL, [req.body.username, hashedPassword]);
-//     let { password, ...userData } = response.rows[0];
-//     res.send(userData);
 //   } catch (error) {
 //     next(error);
 //   }
 // });
+app.get("/properties/:id", async (req, res, next) => {
+  try {
+    let SQL = `SELECT * FROM properties WHERE id=$1`;
+    let response = await client.query(SQL, [req.params.id]);
+    res.send(response.rows[0]);
+  } catch (error) {
+    next(error);
+  }
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, "127.0.0.1", () => console.log(`listening on port ${port}`));
