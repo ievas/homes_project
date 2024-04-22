@@ -36,7 +36,7 @@ function SignUp() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h2 className="title">Sign Up:</h2>
+        <h2 className="title">Register:</h2>
         <label>
           Username:{" "}
           <input

@@ -1,27 +1,30 @@
 import { Link } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
   function handleLogout() {
     setIsLoggedIn(false);
+    localStorage.removeItem("token");
   }
+  const { cartItems } = useCart();
 
   return (
     <>
       <div className="navbar">
         {isLoggedIn ? (
           <>
-            <Link to="/user/:userId/create">Create</Link>
-            <Link to="/user/:userId/inventory">Inventory</Link>
-            <Link to="/user/:userId/cart">Cart({0})</Link>
+            <Link to="/user/create">Create</Link>
+            <Link to="/user/inventory">Inventory</Link>
+            <Link to="/user/cart">Cart({cartItems.length})</Link>
             <button id="logout" onClick={handleLogout}>
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/">Homes For Sale</Link>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/signin">Sign In</Link>
+            <Link to="/">Properties For Sale</Link>
+            {/* <Link to="/signup">Sign Up</Link> */}
+            <Link to="/signin">Log In</Link>
           </>
         )}
       </div>

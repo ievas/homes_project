@@ -14,9 +14,33 @@ import Cart from "./components/Cart";
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
   let [properties, setProperties] = useState({});
+  let [user, setUser] = useState(null);
+
+  // useEffect(() => {
+  //   async function fetchUser() {
+  //     try {
+  //       let response = await fetch("http://localhost:3000/user", {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       let result = await response.json();
+
+  //       if (result) {
+  //         console.log(result);
+  //         setUser(result);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   fetchUser();
+  // }, []);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
+
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -40,9 +64,9 @@ function App() {
             element={<SignIn setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/properties/:id" element={<SingleHouse />} />
-          <Route path="user/userId/create" element={<CreateHouse />} />
-          <Route path="user/userId/inventory" element={<CreateHouse />} />
-          <Route path="/user/:id/cart" element={<Cart />} />
+          <Route path="user/create" element={<CreateHouse />} />
+          <Route path="user/inventory" element={<CreateHouse />} />
+          <Route path="/user/cart" element={<Cart isLoggedIn={isLoggedIn} />} />
         </Routes>
       </CartProvider>
     </>

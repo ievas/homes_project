@@ -1,8 +1,7 @@
+import { useState, useEffect } from "react";
 import defaultHouseImage from "../assets/phoenix.jpeg";
 import AddToCartButton from "./AddToCartButton";
-import { useState, useEffect } from "react";
-let HouseCard = ({ house, isLoggedIn }) => {
-  let token = localStorage.getItem("token");
+let Inventory = ({ isLoggedIn }) => {
   let [user, setUser] = useState([]);
   useEffect(() => {
     async function fetchUser() {
@@ -27,20 +26,12 @@ let HouseCard = ({ house, isLoggedIn }) => {
   }, []);
   return (
     <>
-      <img src={defaultHouseImage} alt="House" className="card-image"></img>
+      {/* <img src={defaultHouseImage} alt="House" className="card-image"></img> */}
       <div style={{ padding: "10px" }}>
-        <h3 className="price">${house.price}</h3>
-        <div>
-          {house.bedrooms} bds | {house.bathrooms} ba | {house.sqft} sqft
-        </div>
-        <div>{house.address}</div>
-        <div>{house.status}</div>
-        <div>Listing by: {house.realtor}</div>
-
-        {isLoggedIn && <AddToCartButton itemId={house.id} />}
+        <h3 className="price">${user.username}</h3>
       </div>
     </>
   );
 };
 
-export default HouseCard;
+export default Inventory;

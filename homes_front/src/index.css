@@ -87,7 +87,7 @@ body {
 .navbar {
   text-align: right;
 }
-.back-button {
+/* .back-button {
   background-color: transparent;
   border: none;
   font-weight: bold;
@@ -95,8 +95,21 @@ body {
   padding: 10px;
   font-size: 16px;
   text-align: left;
-}
+} */
 
 .back_button:hover {
+  text-decoration: underline;
+}
+.cart-plus-button {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  color: rgb(44, 201, 237);
+  padding: 10px;
+  font-size: 16px;
+  text-align: left;
+}
+
+.cart-plus-button:hover {
   text-decoration: underline;
 }

@@ -15,7 +15,7 @@ function SignIn({ setIsLoggedIn }) {
     setIsLoading(true);
     setError("");
     try {
-      let response = await fetch("http://127.0.0.1:3000/signin", {
+      let response = await fetch("http://localhost:3000/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ function SignIn({ setIsLoggedIn }) {
       });
 
       let result = await response.json();
-      console.log(result);
+
       if (result.token) {
         localStorage.setItem("token", result.token);
         setIsLoggedIn(true);
@@ -48,7 +48,15 @@ function SignIn({ setIsLoggedIn }) {
     <>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <h2 className="title">Sign In:</h2>
+        <h2 className="title">
+          Log In or{" "}
+          <Link
+            to="/signup"
+            style={{ color: "lightBlue", padding: 5, margin: 1 }}
+          >
+            Register
+          </Link>
+        </h2>
         <label>
           Username:{" "}
           <input

@@ -48,7 +48,7 @@ function HouseList({ isLoggedIn }) {
             handleClick(house.id);
           }}
         >
-          <HouseCard house={house} />
+          <HouseCard house={house} isLoggedIn={isLoggedIn} />
         </div>
       ))}
     </div>

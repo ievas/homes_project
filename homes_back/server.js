@@ -3,6 +3,7 @@ const cors = require("cors");
 let express = require("express");
 let jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 let uuid = require("uuid");
 const saltRounds = 10;
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 let init = async () => {
   await client.connect();
+  return;
   let SQL = `
   DROP TABLE IF EXISTS cart_items;
   DROP TABLE IF EXISTS users;
@@ -65,6 +67,36 @@ let init = async () => {
   await client.query(SQL);
 };
 
+let isLoggedIn = async (req, res, next) => {
+  try {
+    let token = req.headers.authorization.split(" ")[1];
+    if (!token) {
+      throw new Error("Token not provided");
+    }
+    let payload;
+    try {
+      payload = await jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      console.error(error.message);
+      let err = new Error("not authorized");
+      err.status = 401;
+      throw err;
+    }
+
+    let SQL = `SELECT id, username FROM users WHERE id=$1;`;
+    let response = await client.query(SQL, [payload.id]);
+    if (!response.rows.length) {
+      const error = new Error("User not found");
+      error.status = 401;
+      throw error;
+    }
+    req.user = response.rows[0];
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 app.get("/properties", async (req, res, next) => {
   try {
     let SQL = `SELECT * FROM properties;`;
@@ -75,7 +107,6 @@ app.get("/properties", async (req, res, next) => {
   }
 });
 app.post("/signup", async (req, res, next) => {
-  console.log("post signup");
   try {
     let hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     let SQL = `INSERT INTO users (id, username, password) VALUES ($1, $2, $3) RETURNING *`;
@@ -101,12 +132,14 @@ app.post("/signin", async (req, res, next) => {
     let user = response.rows[0];
     let match = await bcrypt.compare(password, user.password);
     if (match) {
-      let token = jwt.sign(
-        { username: user.username },
-        process.env.JWT_SECRET || "skaidas",
-        { expiresIn: "24h" }
-      );
-      console.log(token);
+      let tokenPayload = {
+        id: user.id,
+        username: user.username,
+      };
+      let token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
+        expiresIn: "24h",
+      });
+
       res.json({ token });
     } else {
       res.status(401).send({ message: "Invalid username or password" });
@@ -115,14 +148,16 @@ app.post("/signin", async (req, res, next) => {
     next(error);
   }
 });
-// app.get("/users/:id", async (req, res, next) => {
-//   try {
-//     let SQL = `SELECT * FROM users WHERE id=$1`;
-//     let response = await client.query(SQL, [req.body.username, hashedPassword]);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+app.get("/user", isLoggedIn, async (req, res, next) => {
+  let userId = req.user.id;
+  try {
+    let SQL = `SELECT id, username FROM users WHERE id=$1`;
+    let response = await client.query(SQL, [userId]);
+    res.json(response.rows[0]);
+  } catch (error) {
+    res.status(500).send({ error: "Failed to fetch cart items" });
+  }
+});
 app.get("/properties/:id", async (req, res, next) => {
   try {
     let SQL = `SELECT * FROM properties WHERE id=$1`;
@@ -132,23 +167,37 @@ app.get("/properties/:id", async (req, res, next) => {
     next(error);
   }
 });
-app.post("/users/:userId/cart", async (req, res, next) => {
+
+app.get("/users/cart", isLoggedIn, async (req, res, next) => {
   try {
-    let userId = req.params.userId;
+    let SQL = `SELECT cart_items.cart_item_id, properties.address, properties.price FROM cart_items
+    INNER JOIN properties ON properties.id = cart_items.property_id
+    WHERE cart_items.user_id = $1;`;
+    let response = await client.query(SQL, [req.user.id]);
+    res.send(response.rows);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post("/users/cart", isLoggedIn, async (req, res, next) => {
+  try {
+    let userId = req.user.id;
     let { property_id, quantity } = req.body;
-    let SQL = `INSERT INTO cart_items (user_id, property_id, quantity) VALUES ($1, $2, $3) RETURNING *`;
-    let response = await client.query(SQL, [user_id, property_id, quantity]);
+    let SQL = `INSERT INTO cart_items (cart_item_id, user_id, property_id, quantity) VALUES (uuid_generate_v4(),$1, $2, $3) RETURNING *`;
+    let response = await client.query(SQL, [userId, property_id, quantity]);
     res.status(201).send(response.rows[0]);
   } catch (error) {
     next(error);
   }
 });
+
 //remove an item from cart
-app.delete("/users/:userId/cart/:houseId", async (req, res, next) => {
+app.delete("/users/cart/:itemId", isLoggedIn, async (req, res, next) => {
   try {
-    let { userId, houseId } = req.params;
-    let SQL = `DELETE FROM cart_items WHERE user_id = $1 AND property_id = $2 RETURNING *`;
-    let response = await client.query(SQL, [userId, houseId]);
+    let { itemId } = req.params;
+    let SQL = `DELETE FROM cart_items WHERE user_id = $1 AND cart_item_id = $2 RETURNING *`;
+    let response = await client.query(SQL, [req.user.id, itemId]);
     if (response.rowCount === 0) {
       return res.status(404).send({ message: "House not found in cart" });
     }
@@ -158,7 +207,7 @@ app.delete("/users/:userId/cart/:houseId", async (req, res, next) => {
   }
 });
 //clear cart
-app.delete("/users/:userId/cart", async (req, res, next) => {
+app.delete("/users/cart", isLoggedIn, async (req, res, next) => {
   try {
     let { userId } = req.params;
     let SQL = `DELETE FROM cart_items WHERE user_id = $1 RETURNING *`;

@@ -6,10 +6,16 @@ let useCart = () => useContext(CartContext);
 
 let CartProvider = ({ children }) => {
   let [cartItems, setCartItems] = useState([]);
+  let [userId, setUserId] = useState(null);
+
   useEffect(() => {
     let fetchCartItems = async () => {
       try {
-        let response = await fetch("/user/:userId/cart");
+        let response = await fetch(`http://localhost:3000/users/cart`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch cart items");
         }
@@ -20,14 +26,21 @@ let CartProvider = ({ children }) => {
       }
     };
     fetchCartItems();
-  }, []);
+  }, [userId]);
+
   let addToCart = async (item) => {
     try {
-      let response = await fetch("http://127.0.0.1:3000/users/:userId/cart", {
+      let response = await fetch(`http://localhost:3000/users/cart`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         body: JSON.stringify(item),
       });
+      if (!response.ok) {
+        throw new Error("Failed to add item to cart");
+      }
       let newItem = await response.json();
       setCartItems((currentItems) => [...currentItems, newItem]);
     } catch (error) {
@@ -36,24 +49,23 @@ let CartProvider = ({ children }) => {
   };
   let removeFromCart = async (itemId) => {
     try {
-      let response = await fetch(
-        "http://127.0.0.1:3000/users/:userId/cart/:houseId",
-        {
-          method: "DELETE",
-        }
-      );
-      setCartItems((currentItems) =>
-        currentItems.filter((item) => item.id !== itemId)
-      );
+      let response = await fetch(`http://localhost:3000/users/cart/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setCartItems((currentItems) => {
+        return currentItems.filter((item) => item.cart_item_id !== itemId);
+      });
     } catch (error) {
       console.error("Error removing item from cart: ", error);
     }
-    setCartItems([...cartItems, item]);
   };
 
   let clearCart = async () => {
     try {
-      await fetch("/users/:userId/cart", {
+      await fetch(`http://localhost:3000/users/cart`, {
         method: "DELETE",
       });
       setCartItems([]);
@@ -64,7 +76,7 @@ let CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart }}
+      value={{ cartItems, addToCart, removeFromCart, clearCart, userId }}
     >
       {children}
     </CartContext.Provider>
