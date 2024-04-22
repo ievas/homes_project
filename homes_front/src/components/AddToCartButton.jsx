@@ -16,6 +16,7 @@ let AddToCartButton = ({ itemId }) => {
       property_id: houseId,
       quantity: 1,
     };
+    console.log({ newItem });
     addToCart(newItem);
   };
   return (

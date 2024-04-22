@@ -184,8 +184,16 @@ app.post("/users/cart", isLoggedIn, async (req, res, next) => {
   try {
     let userId = req.user.id;
     let { property_id, quantity } = req.body;
-    let SQL = `INSERT INTO cart_items (cart_item_id, user_id, property_id, quantity) VALUES (uuid_generate_v4(),$1, $2, $3) RETURNING *`;
+    let SQL = `
+      INSERT INTO cart_items (cart_item_id, user_id, property_id, quantity)
+      VALUES (uuid_generate_v4(),$1, $2, $3)
+      RETURNING
+        cart_item_id,
+        (select address from properties where properties.id = $2) as address,
+        (select price from properties where properties.id = $2) as price`;
     let response = await client.query(SQL, [userId, property_id, quantity]);
+    console.log(response.rows[0]);
+
     res.status(201).send(response.rows[0]);
   } catch (error) {
     next(error);
