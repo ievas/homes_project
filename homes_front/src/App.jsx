@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Navbar from "./components/Navbar";
 import CreateHouse from "./pages/CreateHouse";
+import Inventory from "./pages/Inventory";
 import HouseList from "./components/HouseList";
 import Header from "./components/Header";
 import SingleHouse from "./components/SingleHouse";
@@ -65,7 +66,7 @@ function App() {
           />
           <Route path="/properties/:id" element={<SingleHouse />} />
           <Route path="user/create" element={<CreateHouse />} />
-          <Route path="user/inventory" element={<CreateHouse />} />
+          <Route path="user/inventory" element={<Inventory />} />
           <Route path="/user/cart" element={<Cart isLoggedIn={isLoggedIn} />} />
         </Routes>
       </CartProvider>
