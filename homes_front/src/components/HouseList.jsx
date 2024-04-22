@@ -38,17 +38,18 @@ function HouseList({ isLoggedIn }) {
   //   return property.name.toLowerCase().includes(searchTerm.toLowerCase());
   // });
 
-  // <input
-  //       type="text"
-  //       placeholder="Search..."
-  //       value={searchTerm}
-  //       onChange={handleChange}
-  //     ></input>
-
   return (
     <div className="house-list">
       {properties.map((house) => (
-        <HouseCard key={house.id} house={house} />
+        <div
+          className="card-style"
+          key={house.id}
+          onClick={() => {
+            handleClick(house.id);
+          }}
+        >
+          <HouseCard house={house} />
+        </div>
       ))}
     </div>
   );

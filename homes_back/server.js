@@ -3,6 +3,7 @@ const cors = require("cors");
 let express = require("express");
 let jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+let uuid = require("uuid");
 const saltRounds = 10;
 
 let client = new pg.Client(
@@ -14,10 +15,14 @@ app.use(cors());
 
 let init = async () => {
   await client.connect();
-  let SQL = `DROP TABLE IF EXISTS users;
+  let SQL = `
+  DROP TABLE IF EXISTS cart_items;
+  DROP TABLE IF EXISTS users;
   DROP TABLE IF EXISTS properties;
+
+  CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   CREATE TABLE users(
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT now(),
@@ -25,7 +30,7 @@ let init = async () => {
   );
 
   CREATE TABLE properties(
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     price INTEGER DEFAULT 584900,
     address VARCHAR(900) DEFAULT '1020 Maple Grove Drive
     Fairview, Arcadia 55987',
@@ -37,6 +42,14 @@ let init = async () => {
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
   );
+  CREATE TABLE cart_items (
+    cart_item_id UUID PRIMARY KEY,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    created_at TIMESTAMP DEFAULT now(),
+    user_id UUID REFERENCES users(id) NOT NULL,
+    property_id UUID REFERENCES properties(id) NOT NULL,
+    CONSTRAINT user_property_unique UNIQUE (property_id, user_id)
+  )
   `;
   await client.query(SQL);
 
@@ -47,7 +60,6 @@ let init = async () => {
   INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(590000, '3256 New Moon Drive, Charlotte, NC 28277', 3, 2, 2200, 'Sold', 'Peak Realty');
   INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 1800, 'For Sale', 'Queen City Estate');
   INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(3000000, '870 Twilight Peak Avenue, Carmel, CA 90230', 5, 3, 3500, 'Sale Pending', 'Homes Realty');
-  
         
         `;
   await client.query(SQL);
@@ -66,8 +78,12 @@ app.post("/signup", async (req, res, next) => {
   console.log("post signup");
   try {
     let hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-    let SQL = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`;
-    let response = await client.query(SQL, [req.body.username, hashedPassword]);
+    let SQL = `INSERT INTO users (id, username, password) VALUES ($1, $2, $3) RETURNING *`;
+    let response = await client.query(SQL, [
+      uuid.v4(),
+      req.body.username,
+      hashedPassword,
+    ]);
     let { password, ...userData } = response.rows[0];
     res.send(userData);
   } catch (error) {
@@ -111,6 +127,42 @@ app.get("/properties/:id", async (req, res, next) => {
   try {
     let SQL = `SELECT * FROM properties WHERE id=$1`;
     let response = await client.query(SQL, [req.params.id]);
+    res.send(response.rows[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+app.post("/users/:userId/cart", async (req, res, next) => {
+  try {
+    let userId = req.params.userId;
+    let { property_id, quantity } = req.body;
+    let SQL = `INSERT INTO cart_items (user_id, property_id, quantity) VALUES ($1, $2, $3) RETURNING *`;
+    let response = await client.query(SQL, [user_id, property_id, quantity]);
+    res.status(201).send(response.rows[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+//remove an item from cart
+app.delete("/users/:userId/cart/:houseId", async (req, res, next) => {
+  try {
+    let { userId, houseId } = req.params;
+    let SQL = `DELETE FROM cart_items WHERE user_id = $1 AND property_id = $2 RETURNING *`;
+    let response = await client.query(SQL, [userId, houseId]);
+    if (response.rowCount === 0) {
+      return res.status(404).send({ message: "House not found in cart" });
+    }
+    res.send(response.rows[0]);
+  } catch (error) {
+    next(error);
+  }
+});
+//clear cart
+app.delete("/users/:userId/cart", async (req, res, next) => {
+  try {
+    let { userId } = req.params;
+    let SQL = `DELETE FROM cart_items WHERE user_id = $1 RETURNING *`;
+    let response = await client.query(SQL, [userId]);
     res.send(response.rows[0]);
   } catch (error) {
     next(error);
