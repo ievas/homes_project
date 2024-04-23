@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import defaultHouseImage from "../assets/phoenix.jpeg";
 
 let Inventory = ({ isLoggedIn }) => {
+  let token = localStorage.getItem("token");
   let [user, setUser] = useState([]);
   useEffect(() => {
     async function fetchUser() {

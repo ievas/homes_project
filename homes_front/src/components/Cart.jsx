@@ -34,7 +34,7 @@ let Cart = () => {
             ))}
           </ul>
           <button onClick={clearCart}>Clear Cart</button>
-          <div>
+          <div className="sign">
             <CheckOutButton />
           </div>
         </div>

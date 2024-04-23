@@ -130,9 +130,9 @@ ul {
   /* cursor: not-allowed; */
   transition: background-color 0.3s, color 0.3s;
 }
-.order-button:hover {
+/* .order-button:hover {
   background-color: rgb(44, 201, 237, 0.2);
-}
+} */
 .order-button.enabled {
   background-color: #6bdf6f;
   color: white;

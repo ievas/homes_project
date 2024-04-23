@@ -7,7 +7,11 @@ let BackButton = () => {
   };
   return (
     <>
-      <button onClick={handleBack} className="back_button">
+      <button
+        style={{ marginBottom: "15px" }}
+        onClick={handleBack}
+        className="back_button"
+      >
         ← Back to homes
       </button>
     </>
