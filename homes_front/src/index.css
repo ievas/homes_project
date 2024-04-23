@@ -36,6 +36,7 @@ body {
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 .card-style:hover {
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
@@ -158,6 +159,8 @@ select {
   padding: 5x 10px;
   font-size: 16px;
   border: none;
+  -webkit-appearance: none; /* for Chrome */
+  -moz-appearance: none; /* for Firefox */
   appearance: none;
   background-color: white;
   cursor: pointer;
@@ -170,4 +173,45 @@ select {
 select:focus {
   outline: none;
   border-color: rgb(85, 184, 218);
+}
+.single-card-style {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 800px;
+  margin: auto;
+}
+.house-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.house-image {
+  border: 3px solid #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.house-image:hover {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+}
+.main-image {
+  flex: 2 1 60%;
+  width: auto;
+  max-width: 50%;
+  display: block;
+  margin-bottom: 10px;
+}
+.sub-image {
+  flex: 2 1 29%;
+  display: block;
+  width: auto;
+  max-width: 60%;
+  height: 70px;
+  object-fit: cover;
+}
+.price,
+.title,
+.loading {
+  text-align: center;
 }

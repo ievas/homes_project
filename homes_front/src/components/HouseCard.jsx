@@ -25,6 +25,7 @@ let HouseCard = ({ house, isLoggedIn }) => {
     }
     fetchUser();
   }, []);
+
   return (
     <>
       <img src={defaultHouseImage} alt="House" className="card-image"></img>
