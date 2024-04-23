@@ -11,7 +11,7 @@ import HouseList from "./components/HouseList";
 import Header from "./components/Header";
 import SingleHouse from "./components/SingleHouse";
 import Cart from "./components/Cart";
-
+import CheckOut from "./pages/CheckOut";
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
   let [properties, setProperties] = useState({});
@@ -68,6 +68,10 @@ function App() {
           <Route path="user/create" element={<CreateHouse />} />
           <Route path="user/inventory" element={<Inventory />} />
           <Route path="/user/cart" element={<Cart isLoggedIn={isLoggedIn} />} />
+          <Route
+            path="/user/checkout"
+            element={<CheckOut isLoggedIn={isLoggedIn} />}
+          />
         </Routes>
       </CartProvider>
     </>

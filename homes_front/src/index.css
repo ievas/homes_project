@@ -53,6 +53,7 @@ body {
 .title {
   font-size: 24px;
   font-weight: bold;
+  padding: 45px;
 }
 .search-bar {
   position: relative;
@@ -112,4 +113,17 @@ body {
 
 .cart-plus-button:hover {
   text-decoration: underline;
+}
+ul {
+  list-style-type: none;
+}
+
+.order-button {
+  /* border: solid 1.5px rgb(120, 212, 245); */
+  margin-top: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.order-button:hover {
+  background-color: rgb(44, 201, 237, 0.2);
 }

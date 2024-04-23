@@ -34,13 +34,13 @@ function HouseList({ isLoggedIn }) {
     setSearchTerm(e.target.value);
   }
 
-  // let filteredProperties = properties.filter((property) => {
-  //   return property.name.toLowerCase().includes(searchTerm.toLowerCase());
-  // });
+  let filteredProperties = properties.filter((property) => {
+    return property.address.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="house-list">
-      {properties.map((house) => (
+      {filteredProperties.map((house) => (
         <div
           className="card-style"
           key={house.id}

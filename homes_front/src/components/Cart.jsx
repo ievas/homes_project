@@ -2,17 +2,21 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import BackButton from "./BackButton";
+import CheckOutButton from "./CheckOutButton";
 import { useNavigate } from "react-router-dom";
 
-let Cart = ({ isLoggedIn, userId }) => {
+let Cart = () => {
   let { cartItems, removeFromCart, clearCart } = useCart();
   let navigate = useNavigate();
-  console.log("CART ITEMS:", JSON.stringify(cartItems, null, 2));
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("token") !== null
+  );
   useEffect(() => {
-    if (!isLoggedIn && cartItems.length === 0) {
+    if (!isLoggedIn) {
       navigate("/signin");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
   return (
     <>
       {
@@ -30,6 +34,9 @@ let Cart = ({ isLoggedIn, userId }) => {
             ))}
           </ul>
           <button onClick={clearCart}>Clear Cart</button>
+          <div>
+            <CheckOutButton />
+          </div>
         </div>
       }
     </>

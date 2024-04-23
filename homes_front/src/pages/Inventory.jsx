@@ -28,7 +28,7 @@ let Inventory = ({ isLoggedIn }) => {
     <>
       {/* <img src={defaultHouseImage} alt="House" className="card-image"></img> */}
       <div style={{ padding: "10px" }}>
-        <h3>Your Inventory:</h3>
+        <h3>Your Properties:</h3>
         <h4>Tokens:</h4>
         <h3 className="username">${user.username}</h3>
       </div>

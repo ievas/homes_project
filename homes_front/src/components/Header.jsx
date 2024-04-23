@@ -2,7 +2,9 @@ let Header = () => {
   return (
     <header className="header">
       <div className="left-container">
-        <div className="title">CREATE A HOUSE</div>
+        <div className="title">
+          CREATE <br />A HOUSE
+        </div>
       </div>
 
       <div className="searchbar">
