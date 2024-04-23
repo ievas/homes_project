@@ -6,10 +6,16 @@ import { useCart } from "../components/CartContext";
 let CheckOut = ({ isLoggedIn }) => {
   let [user, setUser] = useState([]);
   let [documentsSigned, setDocumentsSigned] = useState(false);
-  let { cartItems, removeFromCart } = useCart();
+  let { cartItems, removeFromCart, clearCart } = useCart();
+  let [orderPlaced, setOrderPlaced] = useState(false);
 
   let handleCheckOut = () => {
     console.log("Place the order");
+    setOrderPlaced(true);
+    clearCart();
+    // setTimeout(() => {
+    //   setOrderPlaced(false);
+    // }, 6000);
   };
 
   let handleSigning = () => {
@@ -37,19 +43,23 @@ let CheckOut = ({ isLoggedIn }) => {
           }
         </div>
         <div
-          className="sign"
+          className={`${documentsSigned ? "signed" : "sign"}`}
           style={{ padding: "10px", fontSize: 34 }}
           onClick={handleSigning}
         >
           {documentsSigned ? "Documents Signed" : "Sign the documents"}
         </div>
-        <button
-          className={`order-button ${documentsSigned ? "enabled" : ""}`}
-          disabled={!documentsSigned}
-          onClick={handleCheckOut}
-        >
-          Place Order
-        </button>
+        {!orderPlaced && (
+          <button
+            className={`order-button ${documentsSigned ? "enabled" : ""}`}
+            disabled={!documentsSigned}
+            onClick={handleCheckOut}
+          >
+            Place Order
+          </button>
+        )}
+
+        {orderPlaced && <h1 className="purchased-title">PURCHASED</h1>}
       </div>
       <BackButton />
     </>

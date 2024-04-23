@@ -141,3 +141,13 @@ ul {
 .sign:hover {
   color: rgb(44, 201, 237);
 }
+.signed {
+  cursor: default;
+  background-color: transparent;
+}
+.purchased-title {
+  font-size: 160px;
+  color: green;
+  text-align: center;
+  margin-top: 10px;
+}
