@@ -123,7 +123,21 @@ ul {
   margin-top: 40px;
   border-radius: 4px;
   cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ccc;
+  color: #666;
+  /* cursor: not-allowed; */
+  transition: background-color 0.3s, color 0.3s;
 }
 .order-button:hover {
   background-color: rgb(44, 201, 237, 0.2);
+}
+.order-button.enabled {
+  background-color: #6bdf6f;
+  color: white;
+  cursor: pointer;
+}
+.sign:hover {
+  color: rgb(44, 201, 237);
 }
