@@ -1,7 +1,7 @@
-let SortFilter = ({ onSortChange }) => {
+let SortFilter = ({ handleSort }) => {
   return (
     <div>
-      <select onChange={(e) => onSortChange(e.target.value)}>
+      <select onChange={(e) => handleSort(e.target.value)}>
         <option value="price-asc">Price Low to High</option>
         <option value="price-desc">Price High to Low</option>
         <option value="sqft-asc">Sqft Low to High</option>

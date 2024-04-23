@@ -3,61 +3,43 @@ import { useNavigate } from "react-router-dom";
 import HouseCard from "./HouseCard";
 import SortFilter from "./SortFilter";
 
-function HouseList({ isLoggedIn }) {
+function HouseList({ isLoggedIn, sortedProperties, setSortedProperties }) {
   let [searchTerm, setSearchTerm] = useState("");
   let [properties, setProperties] = useState([]);
-  let [sortedProperties, setSortedProperties] = useState([]);
+  // let [sortedProperties, setSortedProperties] = useState([]);
 
   let navigate = useNavigate();
-
-  useEffect(() => {
-    async function fetchProperties() {
-      try {
-        let response = await fetch("http://127.0.0.1:3000/properties");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let result = await response.json();
-
-        setProperties(result);
-        setSortedProperties(result);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchProperties();
-  }, []);
 
   function handleClick(id) {
     let path = `/properties/${id}`;
     navigate(path);
   }
 
-  function handleSort(sortValue) {
-    let sorted = [...properties];
-    switch (sortValue) {
-      case "price-asc":
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case "sqft-asc":
-        sorted.sort((a, b) => a.sqft - b.sqft);
-        break;
-      case "sqft-desc":
-        sorted.sort((a, b) => b.sqft - a.sqft);
-        break;
-      default:
-        break;
-    }
-    setSortedProperties(sorted);
-  }
+  // function handleSort(sortValue) {
+  //   let sorted = [...properties];
+  //   switch (sortValue) {
+  //     case "price-asc":
+  //       sorted.sort((a, b) => a.price - b.price);
+  //       break;
+  //     case "price-desc":
+  //       sorted.sort((a, b) => b.price - a.price);
+  //       break;
+  //     case "sqft-asc":
+  //       sorted.sort((a, b) => a.sqft - b.sqft);
+  //       break;
+  //     case "sqft-desc":
+  //       sorted.sort((a, b) => b.sqft - a.sqft);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setSortedProperties(sorted);
+  // }
 
   return (
     <>
       <div className="house-list">
-        <SortFilter onSortChange={handleSort} />
+        {/* <SortFilter onSortChange={handleSort} /> */}
 
         {sortedProperties.map((house) => (
           <div

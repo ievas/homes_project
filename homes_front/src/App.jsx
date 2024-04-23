@@ -12,10 +12,50 @@ import Header from "./components/Header";
 import SingleHouse from "./components/SingleHouse";
 import Cart from "./components/Cart";
 import CheckOut from "./pages/CheckOut";
+
 function App() {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
-  let [properties, setProperties] = useState({});
+  let [properties, setProperties] = useState([]);
+  let [sortedProperties, setSortedProperties] = useState([]);
   let [user, setUser] = useState(null);
+
+  function handleSort(sortValue) {
+    let sorted = [...properties];
+    switch (sortValue) {
+      case "price-asc":
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case "sqft-asc":
+        sorted.sort((a, b) => a.sqft - b.sqft);
+        break;
+      case "sqft-desc":
+        sorted.sort((a, b) => b.sqft - a.sqft);
+        break;
+      default:
+        break;
+    }
+    setSortedProperties(sorted);
+  }
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        let response = await fetch("http://127.0.0.1:3000/properties");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let result = await response.json();
+
+        setProperties(result);
+        setSortedProperties(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchProperties();
+  }, []);
 
   // useEffect(() => {
   //   async function fetchUser() {
@@ -56,9 +96,18 @@ function App() {
         <h1>
           <Link to="/">Homes</Link>
         </h1>
-        <Header />
+        <Header handleSort={handleSort} />
         <Routes>
-          <Route path="/" element={<HouseList isLoggedIn={isLoggedIn} />} />
+          <Route
+            path="/"
+            element={
+              <HouseList
+                isLoggedIn={isLoggedIn}
+                sortedProperties={sortedProperties}
+                setSortedProperties={setSortedProperties}
+              />
+            }
+          />
           <Route path="/signup" element={<SignUp />} />
           <Route
             path="/signin"

@@ -1,4 +1,5 @@
-let Header = () => {
+import SortFilter from "./SortFilter";
+let Header = ({ handleSort }) => {
   return (
     <header className="header">
       <div className="left-container">
@@ -8,8 +9,9 @@ let Header = () => {
       </div>
 
       <div className="searchbar">
-        <input type="text" />
-        <button type="submit">SEARCH</button>
+        {/* <input type="text" /> */}
+        <button type="submit">SORT</button>
+        <SortFilter handleSort={handleSort} />
       </div>
     </header>
   );
