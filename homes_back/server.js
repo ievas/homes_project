@@ -16,7 +16,7 @@ app.use(cors());
 
 let init = async () => {
   await client.connect();
-  return;
+
   let SQL = `
   DROP TABLE IF EXISTS cart_items;
   DROP TABLE IF EXISTS users;
@@ -41,6 +41,7 @@ let init = async () => {
     sqft INTEGER DEFAULT 1785,
     status VARCHAR(455) DEFAULT 'Active',
     realtor VARCHAR(455) DEFAULT 'Homes ".."',
+    description TEXT,
     created_at TIMESTAMP DEFAULT now(),
     updated_at TIMESTAMP DEFAULT now()
   );
@@ -56,14 +57,13 @@ let init = async () => {
   await client.query(SQL);
 
   SQL = `
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 2200, 'Sale Pending', 'Peak Realty');
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(850000, '4747 Mountain Scape Trail, Reno, NV 89523', 4, 3, 4200, 'For Sale', 'Bluegrass Properties');
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(530000, '611 Sunset Cliffs Blvd, San Diego, CA 92107', 2, 2, 2600, 'For Sale', 'Sierra Realty');
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(590000, '3256 New Moon Drive, Charlotte, NC 28277', 3, 2, 2200, 'Sold', 'Peak Realty');
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 1800, 'For Sale', 'Queen City Estate');
-  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor) VALUES(3000000, '870 Twilight Peak Avenue, Carmel, CA 90230', 5, 3, 3500, 'Sale Pending', 'Homes Realty');
-        
-        `;
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(650000, '2456 Whispering Hills Circle, Lexington, KY 40511', 3, 2, 2200, 'Sale Pending', 'Peak Realty', 'A straightforward three-bedroom, two-bathroom home offers 2,200 sq. ft. of pragmatic space. This unit features luminescent living areas and a functional kitchen. It can''t be yours, as it is listed as ''Sale Pending''.');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(850000, '4747 Mountain Scape Trail, Reno, NV 89523', 4, 3, 4200, 'For Sale', 'Bluegrass Properties', 'Here’s a behemoth of a home with 4,200 sq. ft. that''s not just big—it''s comfortable. With four bedrooms and three bathrooms, it''s decked out with a kitchen that’s a showstopper for anyone who likes to feast. And the views? They add a whimsical touch. Listed by Bluegrass Properties.');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(590000, '3256 New Moon Drive, Charlotte, NC 28277', 3, 2, 2200, 'Sold', 'Peak Realty', 'This place at 3256 New Moon Drive is already sold, but let me tell you about it anyway. It’s a decent setup with three bedrooms and two baths in a cozy 2,200 sq. ft. frame. The people who bought it must’ve seen something special.');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(530000, '611 Sunset Cliffs Blvd, San Diego, CA 92107', 2, 2, 2600, 'For Sale', 'Sierra Realty', 'Welcome to your coastal sanctuary at 611 Sunset Cliffs Blvd. Imagine chilling in this breezy two-bedroom, two-bath pad right by the beach. This 2,600 sq. ft. home features two bedrooms and two baths, offering a luxurious yet comfortable living space. Plus, the place comes with an extra dose of coastal vibe. The large windows and high ceilings allow for an abundance of natural light, enhancing the open, airy feel. This property is a jewel in San Diego’s real estate market.');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(650000, '1782 Maplewood Court, Lexington, KY 40511', 3, 2, 1800, 'For Sale', 'Queen City Estate', 'This is 1782 Maplewood Court: a house that makes an effort. At 1,800 sq. ft., this property manages three bedrooms and two bathrooms. It’s clear, simple, and straightforward. The design—uncomplicated, perhaps to a fault—might be just right for someone. Offered by Queen City Estate.');
+  INSERT INTO properties(price, address, bedrooms, bathrooms, sqft, status, realtor, description) VALUES(3000000, '870 Twilight Peak Avenue, Carmel, CA 90230', 5, 3, 3500, 'Sale Pending', 'Homes Realty', 'Introducing a grand 3,500 sq. ft. structure that houses five bedrooms and three baths at 870 Twilight Peak Avenue: a unique, standalone opportunity in its locale. Features expansive views, almost magical, providing a serene escape from the ordinary. As the only house on the street, it promises unmatched solitude. Currently under a sale pending status through Homes Realty, this property awaits its next chapter.');
+  `;
   await client.query(SQL);
 };
 
@@ -199,6 +199,14 @@ app.post("/users/cart", isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+//update property table's status when a house is sold
+//add owner field to the property table, update that with buyer's user id
+//inventory get route select * from properties where owner_id is logged in users id
+//create a house routes
+//delete a house
+//edit a house
+//put a house for sale - change the house's status in the database
+//add a token field to users table
 
 //remove an item from cart
 app.delete("/users/cart/:itemId", isLoggedIn, async (req, res, next) => {

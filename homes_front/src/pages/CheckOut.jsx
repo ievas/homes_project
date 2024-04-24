@@ -47,7 +47,7 @@ let CheckOut = ({ isLoggedIn }) => {
           style={{ padding: "10px", fontSize: 34 }}
           onClick={handleSigning}
         >
-          {documentsSigned ? "Documents Signed" : "Sign the documents"}
+          {documentsSigned ? "✓ Documents ready" : "Sign the documents"}
         </div>
         {!orderPlaced && (
           <button

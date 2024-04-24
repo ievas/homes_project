@@ -6,6 +6,7 @@ import defaultHouseImage3 from "../assets/phoenix3.jpg";
 import defaultHouseImage4 from "../assets/phoenix4.jpg";
 import defaultHouseImage5 from "../assets/phoenix6.jpg";
 import BackButton from "./BackButton";
+import AddToCatButton from "./AddToCartButton";
 
 let SingleHouse = () => {
   let { id } = useParams();
@@ -59,6 +60,15 @@ let SingleHouse = () => {
               <div>{house.address}</div>
               <div>{house.status}</div>
               <div>Listing by: {house.realtor}</div>
+            </div>
+            <div
+              style={{
+                padding: "10px",
+                maxWidth: 400,
+              }}
+              className="description"
+            >
+              {house.description}
             </div>
           </>
         ) : (

@@ -8,7 +8,7 @@ let CheckOutButton = () => {
   return (
     <>
       <button onClick={goToCheckout} className="checkout_button">
-        ← Proceed to checkout, Sign the papers →
+        ← Proceed to checkout, Sign the documents →
       </button>
     </>
   );

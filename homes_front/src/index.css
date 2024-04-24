@@ -178,8 +178,9 @@ select:focus {
   display: flex;
   flex-direction: row;
   align-items: center;
-  max-width: 800px;
+  max-width: 1400px;
   margin: auto;
+  padding: 20px;
 }
 .house-images {
   display: flex;
@@ -198,7 +199,7 @@ select:focus {
 .main-image {
   flex: 2 1 60%;
   width: auto;
-  max-width: 50%;
+  /* max-width: 50%; */
   display: block;
   margin-bottom: 10px;
 }
