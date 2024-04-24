@@ -60,11 +60,11 @@ let SingleHouse = () => {
               <div>{house.address}</div>
               <div>{house.status}</div>
               <div>Listing by: {house.realtor}</div>
+              <AddToCatButton />
             </div>
             <div
               style={{
-                padding: "10px",
-                maxWidth: 400,
+                maxWidth: 300,
               }}
               className="description"
             >
